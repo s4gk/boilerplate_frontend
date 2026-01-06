@@ -1,9 +1,9 @@
-import type { Metadata } from 'next'
-import { Montserrat } from 'next/font/google'
 import './globals.css'
-import { Providers } from './providers'
+import type { Metadata } from 'next'
+import { Raleway } from 'next/font/google'
+import { ThemeProvider } from 'next-themes'
 
-const montserrat = Montserrat({
+const raleway = Raleway({
   subsets: ['latin'],
 })
 
@@ -19,7 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${montserrat.className} antialiased`}>{children}</body>
+      <body className={`${raleway.className} antialiased`}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   )
 }

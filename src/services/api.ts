@@ -2,22 +2,16 @@ import axios from 'axios'
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
-  withCredentials: true, // cookies HttpOnly
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
 })
 
-/**
- * Response interceptor
- * Django decide si estás autorizado
- */
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // no redirijas aquí
-      // deja que la capa superior decida
     }
     return Promise.reject(error)
   },

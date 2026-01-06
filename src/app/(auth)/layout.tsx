@@ -7,8 +7,8 @@ export default function RootLayout({
 }>) {
   return (
     <div className="bg-background flex min-h-screen w-full gap-8 p-4">
-      <SideBackground />
       {children}
+      <SideBackground />
     </div>
   )
 }
