@@ -15,6 +15,10 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { useLoginForm } from '@/hooks/useLoginForm'
 import Link from 'next/link'
 
+const errorMessageMap: Record<string, string> = {
+  LOGIN_FAILED: 'Credenciales incorrectas. Intente nuevamente.',
+}
+
 export function LoginForm() {
   const { form, onSubmit, isLoading, error } = useLoginForm()
 
@@ -86,10 +90,16 @@ export function LoginForm() {
             />
 
             {error && (
-              <p className="text-destructive text-center text-sm">{error}</p>
+              <p className="text-destructive text-center text-sm">
+                {errorMessageMap[error]}
+              </p>
             )}
 
-            <Button type="submit" disabled={isLoading} className="w-full py-6">
+            <Button
+              type="submit"
+              disabled={isLoading || !form.formState.isValid}
+              className="w-full py-6"
+            >
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />

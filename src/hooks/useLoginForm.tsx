@@ -1,16 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { LoginFormValues, loginSchema } from "@/schemas/login.schema"
+import { authService } from '@/services/auth.service'
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { login } from '@/services/auth'
-import { loginSchema, LoginFormValues } from '@/lib/validators/login.schema'
+import { useState } from "react"
+import { useForm } from "react-hook-form"
 
 export function useLoginForm() {
   const router = useRouter()
   const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -22,18 +21,20 @@ export function useLoginForm() {
   })
 
   const onSubmit = async (values: LoginFormValues) => {
-    setIsLoading(true)
     setError(null)
 
     try {
-      await login(values.email, values.password)
+      await authService.login(values.email, values.password)
       router.push('/dashboard')
     } catch {
-      setError('Credenciales incorrectas. Intente de nuevo.')
-    } finally {
-      setIsLoading(false)
+      setError('LOGIN_FAILED')
     }
   }
 
-  return { form, onSubmit, isLoading, error }
+  return {
+    form,
+    onSubmit,
+    isLoading: form.formState.isSubmitting,
+    error,
+  }
 }

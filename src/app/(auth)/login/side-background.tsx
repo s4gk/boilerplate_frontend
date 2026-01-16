@@ -13,11 +13,11 @@ export function SideBackground() {
 
   const src =
     resolvedTheme === 'dark'
-      ? '/images/auth/bg-dark.webp'
+      ? '/images/auth/bg-dark..webp'
       : '/images/auth/bg-light.webp'
 
   return (
-    <div className="relative w-1/2 overflow-hidden rounded-3xl">
+    <div className="relative w-1/2 overflow-hidden rounded-md">
       {/* Imagen */}
       <Image
         src={src}
@@ -27,16 +27,9 @@ export function SideBackground() {
         priority
       />
 
-      {/* Botón – superior izquierda */}
-      <div className="absolute right-4 bottom-4 z-10">
+      {/* Botón – superior derecha */}
+      <div className="absolute top-4 right-4 z-10 bg-background rounded-md p-1">
         <ThemeToggle />
-      </div>
-
-      {/* Texto – parte inferior */}
-      <div className="absolute right-0 bottom-6 left-0 z-10 px-6 text-center">
-        <p className="text-sm text-white/90">
-          Este equipo avanza porque cada uno cumple su parte, sin excusas.
-        </p>
       </div>
     </div>
   )
