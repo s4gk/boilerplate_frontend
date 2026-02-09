@@ -1,0 +1,55 @@
+'use client'
+
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { step1Schema, Step1Values } from '@/features/auth/schemas/forgot-password.schema'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/shared/ui/form'
+import { Input } from '@/shared/ui/input'
+import { Button } from '@/shared/ui/button'
+import { Spinner } from "@/shared/ui/spinner"
+
+interface EmailStepProps {
+  onSuccess: (email: string) => void
+  isLoading: boolean
+}
+
+export function EmailStep({ onSuccess, isLoading }: EmailStepProps) {
+  const form = useForm<Step1Values>({
+    resolver: zodResolver(step1Schema),
+    defaultValues: { email: '' },
+  })
+
+  return (
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(({ email }) => onSuccess(email))}
+        className="space-y-6"
+      >
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Correo electrónico</FormLabel>
+              <FormControl>
+                <Input placeholder="correo@email.com" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button type="submit" className="w-full py-6" disabled={isLoading}>
+          {isLoading ? <Spinner /> : "Enviar código"}
+        </Button>
+      </form>
+    </Form>
+  )
+}
