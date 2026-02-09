@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Raleway } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
 
+
 const raleway = Raleway({
   subsets: ['latin'],
 })

@@ -1,4 +1,4 @@
-import { SideBackground } from './login/side-background'
+import { SideBackground } from '../../features/auth/components/login/side-background'
 
 export default function RootLayout({
   children,
