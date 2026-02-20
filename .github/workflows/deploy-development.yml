@@ -1,0 +1,25 @@
+name: Deploy Development — Frontend
+
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: deployer
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /srv/crm/frontend
+            git pull origin development
+            cd /srv/crm
+            docker compose build nextjs
+            docker compose up -d --no-deps nextjs
+            echo "✅ Frontend deployed at $(date)"
