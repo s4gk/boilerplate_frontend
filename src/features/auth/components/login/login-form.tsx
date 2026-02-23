@@ -26,7 +26,7 @@ export function LoginForm() {
     <div className="flex w-full items-center justify-center md:w-1/2">
       <div className="w-full max-w-[70%] px-2">
         <div className="mb-12 space-y-8 text-left">
-          <h1 className="text-3xl font-bold">Bienvenido a Saves</h1>
+          <h1 className="text-3xl font-bold">Bienvenido a Saves Prueba Github Actions</h1>
           <p className="text-muted-foreground text-sm">
             Ingrese sus credenciales para acceder a la plataforma.
           </p>
