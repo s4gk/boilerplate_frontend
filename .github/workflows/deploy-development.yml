@@ -21,16 +21,18 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            # Entramos a la carpeta de staging que me mostró
+            # 1. Entrar a la carpeta de staging
             cd /srv/crm/staging
             
-            # Bajamos los últimos cambios de la rama development
+            # 2. Entrar a la carpeta del frontend y limpiar cambios locales (como el next.config.ts)
+            cd frontend
+            git fetch origin development
+            git checkout next.config.ts
             git pull origin development
             
-            # Reconstruimos solo el servicio del frontend
-            # --build obliga a recrear la imagen si hubo cambios en el código
-            # -d es para que corra en segundo plano
-            docker-compose up -d --build frontend
+            # 3. Regresar a la raíz de staging y levantar Docker
+            cd ..
+            docker compose up -d --build frontend
             
-            # Opcional: Limpiar imágenes huérfanas para no llenar el disco
+            # 4. Limpiar imágenes viejas para no llenar el disco
             docker image prune -f
