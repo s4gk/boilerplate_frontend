@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useMemo, useState } from "react"
+import { createContext, useContext, useEffect, useMemo, useState } from "react"
 import { UiPermission } from "@/features/permissions/ui-permissions"
 import { hasPermission } from "@/features/permissions/helpers"
 import { User } from "@/shared/types/user"
@@ -17,20 +17,23 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | null>(null)
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(() => {
-    try {
-      const storedUser = localStorage.getItem("current_user")
-      return storedUser ? JSON.parse(storedUser) : null
-    } catch {
-      localStorage.removeItem("current_user")
-      return null
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("current_user");
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch {
+        localStorage.removeItem("current_user");
+      }
     }
-  })
+  }, []);
 
   const login = (userData: User) => {
-    setUser(userData)
-    localStorage.setItem("current_user", JSON.stringify(userData))
-  }
+    setUser(userData);
+    localStorage.setItem("current_user", JSON.stringify(userData));
+  };
 
   const logout = () => {
     setUser(null)

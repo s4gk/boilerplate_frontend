@@ -27,17 +27,17 @@ export function useLoginForm() {
     try {
       const response = await authService.login(values.email, values.password)
       
-      // 💾 Guardar token si remember me está activo
-      if (values.rememberMe) {
-        localStorage.setItem('auth_token', response.token)
-      } else {
-        sessionStorage.setItem('auth_token', response.token)
+      // ✅ Verificamos que estemos en el navegador antes de usar storage
+      if (typeof window !== 'undefined') {
+        if (values.rememberMe) {
+          localStorage.setItem('auth_token', response.token)
+        } else {
+          sessionStorage.setItem('auth_token', response.token)
+        }
       }
 
-      // 🔄 Redirigir al dashboard
       router.push('/dashboard')
     } catch (err) {
-      // ✅ Usar el helper de errores
       setError(mapApiError(err, 'LOGIN_FAILED'))
     }
   }
