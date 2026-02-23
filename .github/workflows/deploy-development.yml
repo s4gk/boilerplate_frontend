@@ -16,6 +16,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: paginasvestel
           key: ${{ secrets.SERVER_SSH_KEY }}
+          port: 22500
           script: |
             cd /srv/crm/frontend
             git pull origin development
