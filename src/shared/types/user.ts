@@ -5,7 +5,6 @@ export interface User {
   name: string
   email: string
   avatar: string
-  initials: string
   role: string
   permissions: UiPermission[]
 }
