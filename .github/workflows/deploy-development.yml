@@ -1,25 +1,36 @@
-name: Deploy Development — Frontend
+name: Deploy Frontend Staging
 
 on:
   push:
     branches:
-      - development
+      - development  # Se dispara al subir cambios a development
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy via SSH
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Server via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: deployer
-          key: ${{ secrets.SERVER_SSH_KEY }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
-            cd /srv/crm/frontend
+            # Entramos a la carpeta de staging que me mostró
+            cd /srv/crm/staging
+            
+            # Bajamos los últimos cambios de la rama development
             git pull origin development
-            cd /srv/crm
-            docker compose build nextjs
-            docker compose up -d --no-deps nextjs
-            echo "✅ Frontend deployed at $(date)"
+            
+            # Reconstruimos solo el servicio del frontend
+            # --build obliga a recrear la imagen si hubo cambios en el código
+            # -d es para que corra en segundo plano
+            docker-compose up -d --build frontend
+            
+            # Opcional: Limpiar imágenes huérfanas para no llenar el disco
+            docker image prune -f
