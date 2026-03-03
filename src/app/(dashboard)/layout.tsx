@@ -1,6 +1,6 @@
 import { DashboardHeader } from "@/shared/components/header/Header";
 import { AppSidebar } from "@/shared/components/sidebar/Sidebar";
-import { SidebarInset, SidebarProvider } from "@/shared/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AuthProvider } from "@/features/auth/context/AuthProvider";
 import { currentUser } from "@/shared/__mocks__/user";
 import { Providers } from "../providers";
