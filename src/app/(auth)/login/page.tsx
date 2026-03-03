@@ -1,4 +1,5 @@
-import { LoginForm } from '../../../features/auth/components/login/login-form'
+import { Suspense } from 'react'
+import { LoginForm } from '@/features/auth/client'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -8,8 +9,8 @@ export const metadata: Metadata = {
 
 export default function SignIn() {
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <LoginForm />
-    </>
+    </Suspense>
   )
 }

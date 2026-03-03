@@ -1,5 +1,5 @@
 
-import { ForgotPasswordForm } from '@/features'
+import { ForgotPasswordForm } from '@/features/auth/client'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
