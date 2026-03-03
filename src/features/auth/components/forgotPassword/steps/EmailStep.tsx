@@ -18,9 +18,10 @@ import { Spinner } from "@/shared/ui/spinner"
 interface EmailStepProps {
   onSuccess: (email: string) => void
   isLoading: boolean
+  error?: string | null
 }
 
-export function EmailStep({ onSuccess, isLoading }: EmailStepProps) {
+export function EmailStep({ onSuccess, isLoading, error }: EmailStepProps) {
   const form = useForm<Step1Values>({
     resolver: zodResolver(step1Schema),
     defaultValues: { email: '' },
@@ -45,8 +46,14 @@ export function EmailStep({ onSuccess, isLoading }: EmailStepProps) {
             </FormItem>
           )}
         />
-
-        <Button type="submit" className="w-full py-6" disabled={isLoading}>
+        {error && (
+          <div className="p-3 bg-red-100 text-red-700 rounded">
+            <p className="text-sm">
+              {error}
+            </p>
+          </div>
+        )}
+         <Button type="submit" className="w-full py-6" disabled={isLoading}>
           {isLoading ? <Spinner /> : "Enviar código"}
         </Button>
       </form>

@@ -13,8 +13,9 @@ export const step2Schema = z.object({
   code: z
     .string()
     .min(4, "El código debe tener al menos 4 dígitos")
-    .max(8, "El código debe tener máximo 8 dígitos")
-    .regex(/^\d+$/, "Solo se permiten números"),
+    .max(6, "El código debe tener máximo 6 dígitos")
+    .regex(/^[a-zA-Z0-9]+$/, "El código solo debe contener letras y números")
+    .transform((val) => val.toUpperCase()),
 });
 export type Step2Values = z.infer<typeof step2Schema>;
 

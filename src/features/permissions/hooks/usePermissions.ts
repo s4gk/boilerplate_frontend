@@ -7,7 +7,7 @@ import {
   hasAnyPermission, 
   hasAllPermissions 
 } from "@/features/permissions/helpers";
-import { currentUser } from "@/mock/user";
+import { currentUser } from "@/shared/__mocks__/user";
 
 /**
  * Hook para validar permisos del usuario actual en componentes

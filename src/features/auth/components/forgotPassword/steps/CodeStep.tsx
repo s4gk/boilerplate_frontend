@@ -22,9 +22,10 @@ import {
 interface CodeStepProps {
   onSuccess: (code: string) => void
   onBack: () => void
+  error?: string | null
 }
 
-export function CodeStep({ onSuccess, onBack }: CodeStepProps) {
+export function CodeStep({ onSuccess, onBack, error }: CodeStepProps) {
   const form = useForm<Step2Values>({
     resolver: zodResolver(step2Schema),
     defaultValues: { code: '' },
@@ -43,7 +44,7 @@ export function CodeStep({ onSuccess, onBack }: CodeStepProps) {
             <FormItem className="flex flex-col items-center space-y-6">
               <FormLabel>Código de verificación</FormLabel>
               <FormControl>
-                <InputOTP maxLength={6} {...field}>
+                <InputOTP maxLength={6} {...field} pattern="^[a-zA-Z0-9]+$">
                   <InputOTPGroup>
                     <InputOTPSlot index={0} />
                     <InputOTPSlot index={1} />
@@ -61,7 +62,13 @@ export function CodeStep({ onSuccess, onBack }: CodeStepProps) {
             </FormItem>
           )}
         />
-
+        {error && (
+          <div className="p-3 bg-red-100 text-red-700 rounded">
+            <p className="text-sm">
+              {error}
+            </p>
+          </div>
+        )}
         <div className="flex gap-4">
           <Button type="button" variant="outline" onClick={onBack} className="w-full">
             Atrás

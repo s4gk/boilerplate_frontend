@@ -6,27 +6,42 @@ export interface ForgotPasswordEmailDTO {
 
 export interface ForgotPasswordCodeDTO {
   email: string
-  code: string
+  codigo: string
 }
 
 export interface ForgotPasswordResetDTO {
   email: string
-  code: string
-  newPassword: string
+  codigo: string
+  password: string
+}
+
+export interface CheckEmailResponse {
+  ok: boolean
+  correo_estado: boolean
+  correo: string
+  codigo: string
+  mensaje: string
+}
+
+export interface VerifyCodeResponse {
+  ok: boolean
+  correo: string
+  codigo: string
+  mensaje: string
 }
 
 export const forgotPasswordService = {
   sendEmail(data: ForgotPasswordEmailDTO) {
-    return request<void>({
-      route: "/auth/forgot-password",
+    return request<CheckEmailResponse>({
+      route: "/WClComprobarCorreo",
       method: "POST",
       data,
     })
   },
 
   verifyCode(data: ForgotPasswordCodeDTO) {
-    return request<void>({
-      route: "/auth/forgot-password/verify",
+    return request<VerifyCodeResponse>({
+      route: "/WSgVerificarCodigo",
       method: "POST",
       data,
     })
@@ -34,7 +49,7 @@ export const forgotPasswordService = {
 
   resetPassword(data: ForgotPasswordResetDTO) {
     return request<void>({
-      route: "/auth/forgot-password/reset",
+      route: "/WSgCambioContra",
       method: "POST",
       data,
     })

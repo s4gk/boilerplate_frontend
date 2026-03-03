@@ -4,7 +4,7 @@ import { AuthResponse } from "@/shared/types/user"
 export const authService = {
   login(email: string, password: string) {
     return request<AuthResponse>({
-      route: "/auth/login/",
+      route: "/WSglLogin",
       method: "POST",
       data: { email, password },
     })

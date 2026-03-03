@@ -23,7 +23,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar"
 import { Badge } from "@/shared/ui/badge"
 import { Button } from "@/shared/ui/button"
-import { currentUser } from "@/mock/user"
+import { currentUser } from "@/shared/__mocks__/user"
 
 const roleLabels: Record<string, string> = {
   admin: "Administrador",

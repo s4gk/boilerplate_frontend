@@ -2,7 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Raleway } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
-
+import { AuthProvider } from '@/features/auth/context/AuthProvider'
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -22,7 +22,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${raleway.className} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
+          <AuthProvider>
+            {children}
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

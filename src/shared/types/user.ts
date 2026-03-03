@@ -12,6 +12,10 @@ export interface User {
 // Tipo para la respuesta del login
 export interface AuthResponse {
   user: User
-  token: string
+  access: string
+  empleado: string
+  empleado_id: number
+  rol: string
   refreshToken?: string
+  lista_permisos: UiPermission[]
 }

@@ -3,10 +3,10 @@
 import { EmailStep } from './steps/EmailStep'
 import { CodeStep } from './steps/CodeStep'
 import { NewPasswordStep } from './steps/NewPasswordStep'
-import { useForgotPassword } from '@/features/auth/hooks/useForgotPassowrd'
+import { useForgotPassword } from '@/features/auth/hooks/useForgotPassword'
 import { StepIndicator } from './steps/StepIndicator'
 import Link from 'next/link'
-import { SuccessStep } from './steps/SuccesStep'
+import { SuccessStep } from './steps/SuccessStep'
 
 export function ForgotPasswordForm() {
   const {
@@ -15,8 +15,18 @@ export function ForgotPasswordForm() {
     submitCode,
     submitNewPassword,
     isLoading,
+    error,
     goToEmail,
   } = useForgotPassword()
+
+  const errorMessageMap: Record<string, string> = {
+    EMAIL_NOT_FOUND: 'El correo no está registrado.',
+    EMAIL_FAILED: 'Error al enviar el correo. Intente nuevamente.',
+    INVALID_CODE: 'El código ingresado es incorrecto.',
+    RESET_FAILED: 'Error al cambiar la contraseña. Intente nuevamente.',
+  }
+
+  const errorMessage = error ? (errorMessageMap[error] ?? 'Ocurrió un error.') : null
 
   return (
     <div className="flex w-full flex-col items-center justify-center md:w-1/2">
@@ -31,14 +41,15 @@ export function ForgotPasswordForm() {
           </p>
         </div>
         <StepIndicator step={step} />
-        {step === 'EMAIL' && <EmailStep onSuccess={submitEmail} isLoading={isLoading} />}
+        {step === 'EMAIL' && <EmailStep onSuccess={submitEmail} isLoading={isLoading} error={errorMessage} />}
         {step === 'CODE' && (
           <CodeStep
             onSuccess={submitCode}
             onBack={goToEmail}
+            error={errorMessage}
           />
         )}
-        {step === 'RESET' && <NewPasswordStep onSuccess={submitNewPassword} isLoading={isLoading} />}
+        {step === 'RESET' && <NewPasswordStep onSuccess={submitNewPassword} isLoading={isLoading} error={errorMessage}/>}
         {step === 'SUCCESS' && <SuccessStep />}
       </div>
       {step !== 'SUCCESS' && (

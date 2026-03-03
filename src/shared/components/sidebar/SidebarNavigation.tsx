@@ -3,14 +3,16 @@
 import { useSidebar } from "@/shared/ui/sidebar";
 import { useSidebarGroups } from "@/features/permissions/hooks/useSidebarGroups";
 import { SidebarGroupSection } from "./SidebarGroup";
-import { currentUser } from "@/mock/user";
+import { useAuth } from "@/features/auth/context/AuthProvider";
+import { currentUser } from "@/shared/__mocks__/user";
 
 export function SidebarNavigation() {
   const { state } = useSidebar();
+  const { user } = useAuth();
   const isCollapsed = state === "collapsed";
 
   // ✅ Usar el hook directamente
-  const visibleGroups = useSidebarGroups(currentUser.permissions);
+  const visibleGroups = useSidebarGroups(user?.permissions ?? []);
 
   if (visibleGroups.length === 0) {
     return (

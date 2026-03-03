@@ -13,16 +13,17 @@ import {
 } from '@/shared/ui/form'
 import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
-import { Eye, EyeOff, Loader2 } from 'lucide-react'
+import { Eye, EyeOff } from 'lucide-react'
 import { useState } from 'react'
 import { Spinner } from '@/shared/ui/spinner'
 
 interface NewPasswordStepProps {
   onSuccess: (password: string) => void
   isLoading: boolean
+  error?: string | null
 }
 
-export function NewPasswordStep({ onSuccess, isLoading }: NewPasswordStepProps) {
+export function NewPasswordStep({ onSuccess, isLoading, error }: NewPasswordStepProps) {
   const [showPassword, setShowPassword] = useState(false)
   
   const form = useForm<Step3Values>({
@@ -33,12 +34,16 @@ export function NewPasswordStep({ onSuccess, isLoading }: NewPasswordStepProps) 
     },
   })
 
+  // Esto te dirá en consola si hay errores de validación que bloquean el envío
+  console.log("Errores de validación:", form.formState.errors);
+
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(({ password }) => onSuccess(password))}
         className="space-y-6"
       >
+        {/* NUEVA CONTRASEÑA */}
         <FormField
           control={form.control}
           name="password"
@@ -51,6 +56,7 @@ export function NewPasswordStep({ onSuccess, isLoading }: NewPasswordStepProps) 
                     type={showPassword ? "text" : "password"} 
                     {...field} 
                     disabled={isLoading}
+                    placeholder="••••••••"
                   />
                   <button
                     type="button"
@@ -66,7 +72,28 @@ export function NewPasswordStep({ onSuccess, isLoading }: NewPasswordStepProps) 
           )}
         />
 
-        {/* Campo Confirm Password igual al anterior... */}
+        {/* CONFIRMAR CONTRASEÑA - ¡Este campo es OBLIGATORIO para el esquema! */}
+        <FormField
+          control={form.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Confirmar contraseña</FormLabel>
+              <FormControl>
+                <Input 
+                  type={showPassword ? "text" : "password"} 
+                  {...field} 
+                  disabled={isLoading}
+                  placeholder="••••••••"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {error && <p className="text-sm text-red-500 font-medium">{error}</p>}
+
         <Button type="submit" className="w-full py-6" disabled={isLoading}>
           {isLoading ? <Spinner /> : "Restablecer contraseña"}
         </Button>
