@@ -10,14 +10,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/shared/ui/form'
-import { Button } from '@/shared/ui/button'
+} from '@/components/ui/form'
+import { Button } from '@/components/ui/button'
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from '@/shared/ui/input-otp'
+} from '@/components/ui/input-otp'
 
 interface CodeStepProps {
   onSuccess: (code: string) => void

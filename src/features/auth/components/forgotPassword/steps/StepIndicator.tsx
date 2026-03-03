@@ -1,4 +1,4 @@
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/lib/utils";
 
 type Step = "EMAIL" | "CODE" | "RESET" | "SUCCESS";
 
