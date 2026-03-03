@@ -1,5 +1,5 @@
 import { ClipboardList, CheckCircle2 } from "lucide-react";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/lib/utils";
 import { Notification } from "@/shared/types/notifications";
 import { useNotifications } from "@/features/notifications/hooks/use-notifications";
 

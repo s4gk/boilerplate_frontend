@@ -1,13 +1,13 @@
 "use client";
 
 import { Bell, CheckCheck, Inbox } from "lucide-react";
-import { Button } from "@/shared/ui/button";
-import { Badge } from "@/shared/ui/badge";
-import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
-import { ScrollArea } from "@/shared/ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { NotificationItem } from "./NotificationItem";
 import { useNotifications } from "@/features/notifications/hooks/use-notifications";
-import { Separator } from "@/shared/ui/separator";
+import { Separator } from "@/components/ui/separator";
 
 export function Notifications() {
   const userId = "13";
