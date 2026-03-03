@@ -12,17 +12,17 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/shared/ui/command"
+} from "@/components/ui/command"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shared/ui/select"
-import { Kbd } from "@/shared/ui/kbd"
-import { Badge } from "@/shared/ui/badge"
-import { Button } from "@/shared/ui/button"
+} from "@/components/ui/select"
+import { Kbd } from "@/components/ui/kbd"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 
 export function SearchInput() {
   const [open, setOpen] = React.useState(false)

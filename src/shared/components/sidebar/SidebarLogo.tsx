@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { BarChart3 } from "lucide-react"
-import { SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/shared/ui/sidebar"
+import { SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar"
 
 export function SidebarLogo() {
   return (

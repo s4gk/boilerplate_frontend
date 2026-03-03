@@ -4,7 +4,7 @@ import {
   Sidebar,
   SidebarContent,
   SidebarHeader,
-} from "@/shared/ui/sidebar"
+} from "@/components/ui/sidebar"
 import { SidebarLogo } from "@/shared/components/sidebar/SidebarLogo"
 import { SidebarNavigation } from "@/shared/components/sidebar/SidebarNavigation"
 

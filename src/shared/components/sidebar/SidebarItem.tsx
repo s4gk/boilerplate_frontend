@@ -8,8 +8,8 @@ import {
   SidebarMenuSub,
   SidebarMenuSubItem,
   SidebarMenuSubButton,
-} from "@/shared/ui/sidebar"
-import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/shared/ui/collapsible"
+} from "@/components/ui/sidebar"
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible"
 import type { SidebarItem } from "@/shared/components/sidebar/sidebar.config"
 
 export function SidebarItem({ item }: { item: SidebarItem }) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useSidebar } from "@/shared/ui/sidebar";
+import { useSidebar } from "@/components/ui/sidebar";
 import { useSidebarGroups } from "@/features/permissions/hooks/useSidebarGroups";
 import { SidebarGroupSection } from "./SidebarGroup";
 import { useAuth } from "@/features/auth/context/AuthProvider";

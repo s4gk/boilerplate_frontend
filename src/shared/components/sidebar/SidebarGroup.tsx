@@ -6,7 +6,7 @@ import {
   SidebarGroupLabel,
   SidebarMenu,
   SidebarSeparator,
-} from "@/shared/ui/sidebar"
+} from "@/components/ui/sidebar"
 import { SidebarItem } from "./SidebarItem"
 import type { SidebarGroupConfig } from "@/shared/components/sidebar/sidebar.config"
 
