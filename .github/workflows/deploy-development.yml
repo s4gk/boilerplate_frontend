@@ -1,38 +1,43 @@
-name: Deploy Frontend Staging
+name: Deploy Frontend (staging)
 
 on:
   push:
-    branches:
-      - development  # Se dispara al subir cambios a development
+    branches: ["development"]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Deploy to Server via SSH
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Login GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}:staging
+            ghcr.io/${{ github.repository }}:${{ github.sha }}
+
+      - name: Deploy on server
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
+          host: ${{ secrets.STAGING_HOST }}
+          username: ${{ secrets.STAGING_USER }}
+          key: ${{ secrets.STAGING_SSH_KEY }}
+          port: ${{ secrets.STAGING_SSH_PORT }}
           script: |
-            # 1. Entrar a la carpeta de staging
+            set -e
             cd /srv/crm/staging
-            
-            # 2. Entrar a la carpeta del frontend y limpiar cambios locales (como el next.config.ts)
-            cd frontend
-            git fetch origin development
-            git checkout next.config.ts
-            git pull origin development
-            
-            # 3. Regresar a la raíz de staging y levantar Docker
-            cd ..
-            docker compose up -d --build frontend
-            
-            # 4. Limpiar imágenes viejas para no llenar el disco
+            docker compose pull frontend
+            docker compose up -d frontend
             docker image prune -f
