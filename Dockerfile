@@ -19,10 +19,9 @@ ENV NODE_ENV=production
 COPY --from=build /app/package*.json ./
 RUN npm ci --omit=dev
 
-COPY --from=build /app/.next ./.next
 COPY --from=build /app/public ./public
-COPY --from=build /app/next.config.* ./
-COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/.next/standalone ./.next/standalone
+COPY --from=build /app/.next/static ./.next/static
 
 EXPOSE 3000
-CMD ["npm", "run", "start"]
+CMD ["node", ".next/standalone/server.js"]
