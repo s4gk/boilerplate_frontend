@@ -42,7 +42,7 @@ jobs:
           script: |
             set -e
             cd /srv/crm/staging
-            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GHCR_READ_TOKEN }}
+            docker login ghcr.io -u vestel1957 -p ${{ secrets.GHCR_READ_TOKEN }}
             docker compose pull frontend
             docker compose up -d frontend
             docker image prune -f
