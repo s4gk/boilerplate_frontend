@@ -9,11 +9,10 @@ permissions:
   packages: write
 
 jobs:
-  build_push_deploy:
+  build_push:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: docker/setup-buildx-action@v3
 
       - name: Login to GHCR (push)
@@ -32,6 +31,10 @@ jobs:
             ghcr.io/${{ github.repository }}:staging
             ghcr.io/${{ github.repository }}:${{ github.sha }}
 
+  deploy:
+    needs: build_push
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy on server (pull + up)
         uses: appleboy/ssh-action@v1.0.3
         with:
