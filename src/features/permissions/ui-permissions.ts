@@ -219,3 +219,4 @@ export const UI_PERMISSIONS = {
  * Tipo que representa un permiso válido del sistema
  */
 export type UiPermission = typeof UI_PERMISSIONS[keyof typeof UI_PERMISSIONS];
+

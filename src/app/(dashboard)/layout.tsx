@@ -2,6 +2,7 @@ import { DashboardHeader } from "@/shared/components/header/Header";
 import { AppSidebar } from "@/shared/components/sidebar/Sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AuthProvider } from "@/features/auth/context/AuthProvider";
+import { UsersProvider } from "@/features/users/context/UsersProvider";
 import { currentUser } from "@/shared/__mocks__/user";
 import { Providers } from "../providers";
 
@@ -12,17 +13,18 @@ export default function RootLayout({
 }) {
   return (
     <AuthProvider>
-      <Providers>
-        <SidebarProvider className="flex min-h-screen w-full">
-          <AppSidebar />
+      <UsersProvider>
+        <Providers>
+          <SidebarProvider className="flex min-h-screen w-full">
+            <AppSidebar />
 
-          <SidebarInset>
-            <DashboardHeader />
-            {children}
-          </SidebarInset>
-        </SidebarProvider>
-      </Providers>
+            <SidebarInset>
+              <DashboardHeader />
+              {children}
+            </SidebarInset>
+          </SidebarProvider>
+        </Providers>
+      </UsersProvider>
     </AuthProvider>
-
   );
 }

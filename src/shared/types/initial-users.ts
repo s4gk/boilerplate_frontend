@@ -1,0 +1,68 @@
+import type { Employee } from "./employee"
+
+export const initialUsers: Employee[] = [
+  {
+    id: "1",
+    name: "Carlos Martinez",
+    email: "carlos.martinez@empresa.com",
+    role: "admin",
+    status: "active",
+    createdAt: "2024-01-15",
+  },
+  {
+    id: "2",
+    name: "Ana Rodriguez",
+    email: "ana.rodriguez@empresa.com",
+    role: "editor",
+    status: "active",
+    createdAt: "2024-02-20",
+  },
+  {
+    id: "3",
+    name: "Miguel Lopez",
+    email: "miguel.lopez@empresa.com",
+    role: "viewer",
+    status: "active",
+    createdAt: "2024-03-10",
+  },
+  {
+    id: "4",
+    name: "Laura Fernandez",
+    email: "laura.fernandez@empresa.com",
+    role: "editor",
+    status: "inactive",
+    createdAt: "2024-04-05",
+  },
+  {
+    id: "5",
+    name: "Pedro Sanchez",
+    email: "pedro.sanchez@empresa.com",
+    role: "viewer",
+    status: "active",
+    createdAt: "2024-05-18",
+  },
+  {
+    id: "6",
+    name: "Sofia Garcia",
+    email: "sofia.garcia@empresa.com",
+    role: "admin",
+    status: "active",
+    createdAt: "2024-06-22",
+  },
+  {
+    id: "7",
+    name: "Diego Torres",
+    email: "diego.torres@empresa.com",
+    role: "editor",
+    status: "inactive",
+    createdAt: "2024-07-30",
+  },
+  {
+    id: "8",
+    name: "Valentina Ruiz",
+    email: "valentina.ruiz@empresa.com",
+    role: "viewer",
+    status: "active",
+    createdAt: "2024-08-14",
+  },
+]
