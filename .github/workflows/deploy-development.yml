@@ -29,8 +29,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:staging
-            ghcr.io/${{ github.repository }}:${{ github.sha }}
+            ghcr.io/vestel1957/saves_frontend:staging
+            ghcr.io/vestel1957/saves_frontend:${{ github.sha }}
 
   deploy:
     needs: build_push
