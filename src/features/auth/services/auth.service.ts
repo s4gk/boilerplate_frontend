@@ -18,10 +18,11 @@ export const authService = {
     })
   },
 
-  logout() {
+  logout(refresh_token: string) {
     return request<void>({
       route: "/auth/logout",
       method: "POST",
+      data: { refresh_token }
     })
   },
 

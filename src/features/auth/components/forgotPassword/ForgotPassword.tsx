@@ -20,7 +20,6 @@ export function ForgotPasswordForm() {
   } = useForgotPassword()
 
   const errorMessageMap: Record<string, string> = {
-    EMAIL_NOT_FOUND: 'El correo no está registrado.',
     EMAIL_FAILED: 'Error al enviar el correo. Intente nuevamente.',
     INVALID_CODE: 'El código ingresado es incorrecto.',
     RESET_FAILED: 'Error al cambiar la contraseña. Intente nuevamente.',

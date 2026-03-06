@@ -7,7 +7,7 @@ export type ForgotStep = 'EMAIL' | 'CODE' | 'RESET' | 'SUCCESS'
 export function useForgotPassword() {
   const [step, setStep] = useState<ForgotStep>('EMAIL')
   const [email, setEmail] = useState<string | null>(null)
-  const [codigo, setCodigo] = useState<string | null>(null)
+  const [code, setCode] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -21,14 +21,9 @@ export function useForgotPassword() {
     setError(null)
 
     try {
-      const response = await forgotPasswordService.sendEmail({ email: emailValue })
+      await forgotPasswordService.sendEmail({ email: emailValue })
 
-      if (!response.ok || !response.correo_estado) {
-        setError('EMAIL_NOT_FOUND')
-        return
-      }
-
-      setEmail(response.correo)
+      setEmail(emailValue)
       setStep('CODE')
     } catch (err) {
       setError(mapApiError(err, 'EMAIL_FAILED'))
@@ -37,7 +32,7 @@ export function useForgotPassword() {
     }
   }
 
-  const submitCode = async (codigoValue: string) => {
+  const submitCode = async (codeValue: string) => {
     if (!email) return
 
     setIsLoading(true)
@@ -46,15 +41,15 @@ export function useForgotPassword() {
     try {  
       const response = await forgotPasswordService.verifyCode({
         email,
-        codigo: codigoValue,
+        code: codeValue,
       });
 
-      if (!response.ok) {
+      if (!response.verified) {
         setError('INVALID_CODE');
         return;
       }
 
-      setCodigo(codigoValue);
+      setCode(codeValue);
       setStep('RESET');
     } catch (err) {
       setError(mapApiError(err, 'INVALID_CODE'));
@@ -63,11 +58,10 @@ export function useForgotPassword() {
     }
   }
 
-  const submitNewPassword = async (newPassword: string) => {
-    console.log("Valores actuales:", { email, codigo, newPassword });
-    if (!email || !codigo) {
-      alert("Error: El email o el código se perdieron en el estado.");
-      return;
+  const submitNewPassword = async (newPassword: string) => {    
+    if (!email || !code) {
+      setError('RESET_FAILED')
+      return
     }
 
     setIsLoading(true)
@@ -76,8 +70,8 @@ export function useForgotPassword() {
     try {
       await forgotPasswordService.resetPassword({
         email,
-        codigo,
-        password: newPassword,
+        code,
+        new_password: newPassword,
       })
 
       setStep('SUCCESS')

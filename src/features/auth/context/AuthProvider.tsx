@@ -50,14 +50,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(userData)
   }
 
-  const logout = () => {
-    // Llamamos al endpoint de logout del backend
-    authService.logout().catch(() => {})
-    setUser(null)
-    Cookies.remove("auth_token")
-    Cookies.remove("refresh_token")
-    Cookies.remove("user_name")
-    Cookies.remove("user_role")
+  const logout = async () => {
+    try {
+      const refresh_token = Cookies.get("refresh_token")
+      if (refresh_token) {
+        await authService.logout(refresh_token)
+      }
+    } catch (error) {
+      console.error("Error en logout backend:", error)
+    } finally {
+      setUser(null)
+      Cookies.remove("auth_token")
+      Cookies.remove("refresh_token")
+      Cookies.remove("user_name")
+      Cookies.remove("user_role")
+    }
   }
 
   const value = useMemo<AuthContextValue>(
