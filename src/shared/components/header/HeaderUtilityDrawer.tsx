@@ -9,8 +9,23 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
+import { useAuth } from "@/features/auth/context/AuthProvider"
+import { useRouter } from "next/navigation"
 
 export function HeaderUtilityDrawer() {
+  const { logout } = useAuth()
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    console.log("Click Logout")
+    try {
+      await logout()
+      router.replace("/login")
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error)
+    }
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -36,7 +51,10 @@ export function HeaderUtilityDrawer() {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem className="gap-2 py-2 text-red-500">
+        <DropdownMenuItem
+          onClick={handleLogout}
+          className="gap-2 py-2 text-red-500"
+        >
           <LogOut className="size-4" />
           Cerrar sesión
         </DropdownMenuItem>

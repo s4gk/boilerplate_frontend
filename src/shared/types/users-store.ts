@@ -1,7 +1,6 @@
-import { initialUsers } from "./initial-users"
 import type { Employee } from "./employee"
 
-let users: Employee[] = [...initialUsers]
+let users: Employee[] = []
 let listeners: Array<() => void> = []
 
 function notify() {
@@ -20,7 +19,7 @@ export const usersStore = {
       id: crypto.randomUUID(),
       name: data.name,
       email: data.email,
-      role: data.role,
+      roles: data.roles,
       status: data.status,
       createdAt: new Date().toISOString().split("T")[0],
     }
@@ -31,7 +30,7 @@ export const usersStore = {
   updateUser(id: string, data: Omit<Employee, "id" | "createdAt">) {
     users = users.map((u) =>
       u.id === id
-        ? { ...u, name: data.name, email: data.email, role: data.role, status: data.status }
+        ? { ...u, name: data.name, email: data.email, role: data.roles, status: data.status }
         : u
     )
     notify()

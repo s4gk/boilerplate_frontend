@@ -289,7 +289,7 @@ export const sidebarConfig: SidebarGroupConfig[] = [
       {
         label: "Empleados",
         icon: Users,
-        href: "/employees",
+        href: "/users",
         permission: "empleados.principal.ver",
       },
       {
