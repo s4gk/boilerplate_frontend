@@ -2,12 +2,11 @@ import {
   SidebarGroupConfig, 
   SidebarItem 
 } from "@/shared/components/sidebar/sidebar.config";
-import { UiPermission } from "@/features/permissions/ui-permissions";
 import { hasPermission } from "@/features/permissions/helpers";
 
 const filterSidebarItems = (
   items: SidebarItem[],
-  userPermissions: UiPermission[]
+  userPermissions: string[]
 ): SidebarItem[] => {
   return items
     .filter(item => {
@@ -32,7 +31,7 @@ const filterSidebarItems = (
 
 export const filterSidebarGroups = (
   groups: SidebarGroupConfig[],
-  userPermissions: UiPermission[]
+  userPermissions: string[]
 ): SidebarGroupConfig[] => {
   return groups
     .map(group => {

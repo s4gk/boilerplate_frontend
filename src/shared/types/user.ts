@@ -1,21 +1,34 @@
-import { UiPermission } from "@/features/permissions/ui-permissions"
-
-export interface User {
-  id: number
+export interface Tenant {
+  id: string
   name: string
-  email: string
-  avatar: string
-  role: string
-  permissions: UiPermission[]
+  slug: string
+  logo_url: string | null
+  plan: string
 }
 
-// Tipo para la respuesta del login
+export interface UserRole {
+  id: string
+  name: string
+}
+
+export interface User {
+  id: string
+  email: string
+  username: string
+  first_name: string
+  last_name: string
+  avatar_url: string | null
+  is_super_admin: boolean
+  tenant: Tenant
+  roles: UserRole[]
+  permissions: string[]
+}
+
+// Respuesta del /auth/me
+export type MeResponse = User
+
+// Respuesta del login
 export interface AuthResponse {
-  user: User
-  access: string
-  empleado: string
-  empleado_id: number
-  rol: string
-  refreshToken?: string
-  lista_permisos: UiPermission[]
+  access_token: string
+  refresh_token: string
 }

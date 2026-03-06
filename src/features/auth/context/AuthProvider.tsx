@@ -1,14 +1,15 @@
 "use client"
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react"
-import { UiPermission } from "@/features/permissions/ui-permissions"
-import { hasPermission } from "@/features/permissions/helpers"
 import { User } from "@/shared/types/user"
+import { authService } from "@/features/auth/services/auth.service"
+import Cookies from "js-cookie"
 
 interface AuthContextValue {
   user: User | null
-  permissions: UiPermission[]
+  permissions: string[]
   isAuthenticated: boolean
+  isLoading: boolean
   has: (permission?: string) => boolean
   login: (user: User) => void
   logout: () => void
@@ -17,40 +18,64 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | null>(null)
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
+  // Al cargar la app, si hay token, llamamos a /auth/me para restaurar la sesión
   useEffect(() => {
-    const storedUser = localStorage.getItem("current_user");
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch {
-        localStorage.removeItem("current_user");
-      }
+    const token = Cookies.get("auth_token")
+    if (!token) {
+      setIsLoading(false)
+      return
     }
-  }, []);
+
+    authService
+      .me()
+      .then((userData) => {
+        setUser(userData)
+      })
+      .catch(() => {
+        // Token inválido o expirado, limpiamos todo
+        Cookies.remove("auth_token")
+        Cookies.remove("refresh_token")
+        Cookies.remove("user_name")
+        Cookies.remove("user_role")
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
+  }, [])
 
   const login = (userData: User) => {
-    setUser(userData);
-    localStorage.setItem("current_user", JSON.stringify(userData));
-  };
-
-  const logout = () => {
-    setUser(null)
-    localStorage.removeItem("current_user")
-    localStorage.removeItem("auth_token")
-    sessionStorage.removeItem("auth_token")
+    setUser(userData)
   }
 
-  const value = useMemo<AuthContextValue>(() => ({
-    user,
-    permissions: user?.permissions ?? [],
-    isAuthenticated: !!user,
-    has: (permission?: string) =>
-      hasPermission(user?.permissions ?? [], permission),
-    login,
-    logout,
-  }), [user])
+  const logout = () => {
+    // Llamamos al endpoint de logout del backend
+    authService.logout().catch(() => {})
+    setUser(null)
+    Cookies.remove("auth_token")
+    Cookies.remove("refresh_token")
+    Cookies.remove("user_name")
+    Cookies.remove("user_role")
+  }
+
+  const value = useMemo<AuthContextValue>(
+    () => ({
+      user,
+      permissions: user?.permissions ?? [],
+      isAuthenticated: !!user,
+      isLoading,
+      has: (permission?: string) => {
+        if (!permission) return true
+        if (user?.is_super_admin) return true
+        return (user?.permissions ?? []).includes(permission)
+      },
+      login,
+      logout,
+    }),
+    [user, isLoading]
+  )
 
   return (
     <AuthContext.Provider value={value}>

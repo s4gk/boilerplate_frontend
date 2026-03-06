@@ -1,13 +1,13 @@
 import { LoginFormValues, loginSchema } from "@/features/auth/schemas/login.schema"
-import { authService } from '@/features/auth/services/auth.service'
+import { authService } from "@/features/auth/services/auth.service"
 import { mapApiError } from "@/shared/lib/apiError"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation"
 import { useAuth } from "@/features/auth/context/AuthProvider"
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie"
 
 export function useLoginForm() {
   const router = useRouter()
@@ -18,12 +18,11 @@ export function useLoginForm() {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
       rememberMe: false,
     },
   })
-
 
   const onSubmit = async (values: LoginFormValues) => {
     setError(null)
@@ -31,36 +30,25 @@ export function useLoginForm() {
     try {
       const response = await authService.login(values.email, values.password)
 
-      const cookieOptions = values.rememberMe
-        ? { expires: 7 }
-        : undefined
+      const cookieOptions = values.rememberMe ? { expires: 7 } : undefined
 
       // Guardamos el token
-      Cookies.set('auth_token', response.access, cookieOptions)
-      
-      // Guardamos info del usuario para usarla en la app
-      Cookies.set('user_name', response.empleado, cookieOptions);
-      Cookies.set('user_role', response.rol, cookieOptions);
+      Cookies.set("auth_token", response.access_token, cookieOptions)
 
-      if (response.refreshToken) {
-        Cookies.set('refresh_token', response.refreshToken, { expires: 30 })
+      if (response.refresh_token) {
+        Cookies.set("refresh_token", response.refresh_token, { expires: 30 })
       }
 
-      // Llamamos login() del contexto con los datos del usuario real
-      login({
-        id: response.empleado_id,
-        name: response.empleado,
-        email: values.email,
-        avatar: '',
-        role: response.rol,
-        permissions: response.lista_permisos as any,
-      })
+      // Llamamos a /auth/me pasando el token directamente
+      const user = await authService.me(response.access_token)
 
-      const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
+      // Guardamos el usuario en el contexto
+      login(user)
+
+      const callbackUrl = searchParams.get("callbackUrl") || "/dashboard"
       router.push(callbackUrl)
-
     } catch (err) {
-      setError(mapApiError(err, 'LOGIN_FAILED'))
+      setError(mapApiError(err, "LOGIN_FAILED"))
     }
   }
 
