@@ -1,0 +1,14 @@
+import { SideBackground } from '../../features/auth/components/login/SideBackground'
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  return (
+    <div className="bg-background flex min-h-screen w-full gap-8 p-4">
+      {children}
+      <SideBackground />
+    </div>
+  )
+}
